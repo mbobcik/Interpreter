@@ -2,7 +2,7 @@
 #
 # EOF (end-of-file) token is used to indicate that
 # there is no more input left for lexical analysis
-INTEGER, PLUS, EOF = 'INTEGER', 'PLUS', 'EOF'
+INTEGER, MINUS, EOF = 'INTEGER', 'MINUS', 'EOF'
 
 
 class Token(object):
@@ -67,8 +67,8 @@ class Interpreter(object):
             self.pos += 1
             return token
 
-        if current_char == '+':
-            token = Token(PLUS, current_char)
+        if current_char == '-':
+            token = Token(MINUS, current_char)
             self.pos += 1
             return token
 
@@ -85,7 +85,7 @@ class Interpreter(object):
             self.error()
 
     def expr(self):
-        """expr -> INTEGER PLUS INTEGER"""
+        """expr -> INTEGER MINUS INTEGER"""
         # set current token to the first token taken from the input
         self.current_token = self.get_next_token()
 
@@ -93,9 +93,9 @@ class Interpreter(object):
         left = self.current_token
         self.eat(INTEGER)
 
-        # we expect the current token to be a '+' token
+        # we expect the current token to be a '-' token
         op = self.current_token
-        self.eat(PLUS)
+        self.eat(MINUS)
 
         # we expect the current token to be a single-digit integer
         right = self.current_token
@@ -103,11 +103,11 @@ class Interpreter(object):
         # after the above call the self.current_token is set to
         # EOF token
 
-        # at this point INTEGER PLUS INTEGER sequence of tokens
+        # at this point INTEGER MINUS INTEGER sequence of tokens
         # has been successfully found and the method can just
         # return the result of adding two integers, thus
         # effectively interpreting client input
-        result = left.value + right.value
+        result = left.value - right.value
         return result
 
 
